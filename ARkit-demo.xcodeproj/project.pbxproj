@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		FA51F11D2ED03812002BC852 /* BodyTracking in Frameworks */ = {isa = PBXBuildFile; productRef = FA51F11C2ED03812002BC852 /* BodyTracking */; };
+		FA51F11F2ED03812002BC852 /* FaceTracking in Frameworks */ = {isa = PBXBuildFile; productRef = FA51F11E2ED03812002BC852 /* FaceTracking */; };
+		FA51F1212ED03812002BC852 /* HandTracking in Frameworks */ = {isa = PBXBuildFile; productRef = FA51F1202ED03812002BC852 /* HandTracking */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		FA51F0EE2ECFA93D002BC852 /* ARkit-demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ARkit-demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -23,6 +29,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FA51F11F2ED03812002BC852 /* FaceTracking in Frameworks */,
+				FA51F11D2ED03812002BC852 /* BodyTracking in Frameworks */,
+				FA51F1212ED03812002BC852 /* HandTracking in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -65,6 +74,9 @@
 			);
 			name = "ARkit-demo";
 			packageProductDependencies = (
+				FA51F11C2ED03812002BC852 /* BodyTracking */,
+				FA51F11E2ED03812002BC852 /* FaceTracking */,
+				FA51F1202ED03812002BC852 /* HandTracking */,
 			);
 			productName = "ARkit-demo";
 			productReference = FA51F0EE2ECFA93D002BC852 /* ARkit-demo.app */;
@@ -94,6 +106,9 @@
 			);
 			mainGroup = FA51F0E52ECFA93D002BC852;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				FA51F11B2ED03812002BC852 /* XCRemoteSwiftPackageReference "BodyTracking" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = FA51F0EF2ECFA93D002BC852 /* Products */;
 			projectDirPath = "";
@@ -332,6 +347,35 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		FA51F11B2ED03812002BC852 /* XCRemoteSwiftPackageReference "BodyTracking" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Reality-Dev/BodyTracking";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.37;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		FA51F11C2ED03812002BC852 /* BodyTracking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA51F11B2ED03812002BC852 /* XCRemoteSwiftPackageReference "BodyTracking" */;
+			productName = BodyTracking;
+		};
+		FA51F11E2ED03812002BC852 /* FaceTracking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA51F11B2ED03812002BC852 /* XCRemoteSwiftPackageReference "BodyTracking" */;
+			productName = FaceTracking;
+		};
+		FA51F1202ED03812002BC852 /* HandTracking */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = FA51F11B2ED03812002BC852 /* XCRemoteSwiftPackageReference "BodyTracking" */;
+			productName = HandTracking;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = FA51F0E62ECFA93D002BC852 /* Project object */;
 }
