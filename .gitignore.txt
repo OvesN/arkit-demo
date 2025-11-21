@@ -1,0 +1,106 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Icon?
+Icon?
+
+# Thumbnails
+._*
+
+# Finder and Spotlight
+.Spotlight-V100
+.Trashes
+
+# Xcode / Swift
+build/
+DerivedData/
+*.xcworkspace/xcuserdata/
+xcuserdata/
+*.xcuserdatad
+*.xccheckout
+*.xcscmblueprint
+*.xcuserstate
+*.xcdebugger
+*.moved-aside
+*.hmap
+*.ipa
+*.xcarchive
+
+# Project/user settings (user-specific)
+*.pbxuser
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xcsettings
+
+# Playground
+timeline.xctimeline
+playground.xcworkspace
+
+# Swift Package Manager
+.build/
+.swiftpm/
+Packages/
+# If you want Package.resolved tracked, remove the next line
+Package.resolved
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/Build/
+
+# Accio
+.accio/
+
+# fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/*
+fastlane/test_output/
+
+# Signing, certs, provisioning profiles
+*.mobileprovision
+*.provisionprofile
+*.cer
+*.p12
+*.pem
+exportOptions.plist
+
+# Keys / secrets / env
+*.key
+*.keystore
+*.env
+.env.*
+Secrets/
+credentials/
+*.secret
+
+# Build generated files, symbols, logs
+*.o
+*.LinkFileList
+*.dSYM
+*.log
+*.orig
+*.rej
+
+# IDEs and editors
+.idea/
+*.iml
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+
+# Misc
+local.properties
+*.swp
+*~ 
+
+# Avoid accidentally committing large device support
+Library/Developer/Xcode/iOS DeviceSupport/**
+
+# === Project-specific ignores (add here) ===
+# e.g. /Resources/GeneratedFiles/
