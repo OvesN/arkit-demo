@@ -18,7 +18,6 @@ class KeyframeBodyARView: ARView {
     required init(frame frameRect: CGRect, isRightArm: Bool = true) {
         super.init(frame: frameRect)
         
-
         keyframeMatcher = KeyframeMatcher(isRightArm: isRightArm)
         
         setupBodyTracking()

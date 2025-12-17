@@ -1,4 +1,5 @@
 import SwiftUI
+import RealityKit
 import Combine
 
 struct ContentView: View {
@@ -11,16 +12,22 @@ struct ContentView: View {
     }
     
     var body: some View {
-        NavigationStack {
+        ZStack {
+            // Background AR View
+            ARViewContainer()
+                .edgesIgnoringSafeArea(.all)
+            
+            // UI Overlay - at the top
             VStack(spacing: 0) {
                 // Mode Picker
-                Picker("Input Mode", selection: $selectedMode) {
+                Picker("Input Mode", selection:  $selectedMode) {
                     ForEach(InputMode.allCases, id: \.self) { mode in
                         Text(mode.rawValue).tag(mode)
                     }
                 }
                 .pickerStyle(. segmented)
-                .padding()
+                .padding(. horizontal)
+                .padding(.top, 8)
                 
                 // Arm Selection
                 Picker("Arm", selection: $isRightArm) {
@@ -28,24 +35,16 @@ struct ContentView: View {
                     Text("Left Arm").tag(false)
                 }
                 .pickerStyle(.segmented)
-                .padding(. horizontal)
+                .padding(.horizontal)
+                .padding(.top, 8)
                 
-                // Content based on mode
-                ARKitExerciseView(isRightArm: isRightArm)
-//                switch selectedMode {
-//                case .camera:
-//                    ARKitExerciseView(isRightArm: isRightArm)
-//                case . video:
-//                    MediaPipeExerciseView(isRightArm: isRightArm)
-//                }
+                Spacer()  // Push everything to the top
             }
-            .navigationTitle("Bicep Curl Trainer")
-            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
 
-// MARK: - ARKit View
+// MARK:  - ARKit View
 
 struct ARKitExerciseView: View {
     let isRightArm: Bool
@@ -53,27 +52,35 @@ struct ARKitExerciseView: View {
     
     var body: some View {
         ZStack {
-            // AR View
-            ARKitViewContainer(viewModel: viewModel, isRightArm: isRightArm)
-                . edgesIgnoringSafeArea(.bottom)
+            // AR View - This should be visible
+            ARKitViewContainer(viewModel:  viewModel, isRightArm: isRightArm)
+                .edgesIgnoringSafeArea(.all)
             
-            // Overlay
+            // Overlay - Made transparent to allow AR view to show through
             KeyframeOverlayView(
-                matcher: viewModel.matcher,
+                matcher:  viewModel.matcher,
                 matchResult: viewModel.lastResult
             )
+            .allowsHitTesting(false)  // Allow touches to pass through to AR view
             
-            // Reset button
+            // Reset button - small and at top right
             VStack {
-                Spacer()
-                
-                Button(action: { viewModel.reset() }) {
-                    Label("Reset", systemImage: "arrow. counterclockwise")
-                        .padding()
-                        . background(.ultraThinMaterial)
-                        .cornerRadius(12)
+                HStack {
+                    Spacer()
+                    
+                    Button(action: { viewModel.reset() }) {
+                        Image(systemName: "arrow.counterclockwise")
+                            . font(.system(size: 16))
+                            .foregroundColor(. white)
+                            .padding(8)
+                            .background(Color.black.opacity(0.3))
+                            .clipShape(Circle())
+                    }
+                    .padding(.trailing, 16)
+                    . padding(.top, 60)
                 }
-                .padding(. bottom, 30)
+                
+                Spacer()
             }
         }
     }
@@ -105,107 +112,35 @@ class ARKitExerciseViewModel: ObservableObject {
 }
 
 struct ARKitViewContainer: UIViewRepresentable {
-    @ObservedObject var viewModel: ARKitExerciseViewModel
-    let isRightArm: Bool
+    @ObservedObject var viewModel:  ARKitExerciseViewModel
+    let isRightArm:  Bool
     
     func makeUIView(context: Context) -> KeyframeBodyARView {
-        let arView = KeyframeBodyARView(frame: . zero, isRightArm: isRightArm)
+        let arView = KeyframeBodyARView(frame: . zero, isRightArm:  isRightArm)
         viewModel.bind(to: arView)
         return arView
     }
     
-    func updateUIView(_ uiView: KeyframeBodyARView, context: Context) {}
+    func updateUIView(_ uiView: KeyframeBodyARView, context:  Context) {}
 }
 
-// MARK: - MediaPipe View
-
-//struct MediaPipeExerciseView: View {
-//    let isRightArm: Bool
-//    @StateObject private var processor: KeyframeVideoProcessor
-//    @State private var showVideoPicker = false
-//    @State private var selectedVideoURL: URL?
-//    
-//    init(isRightArm: Bool) {
-//        self.isRightArm = isRightArm
-//        self._processor = StateObject(wrappedValue: KeyframeVideoProcessor(isRightArm: isRightArm))
-//    }
-//    
-//    var body: some View {
-//        ZStack {
-//            Color.black.edgesIgnoringSafeArea(.all)
-//            
-//            // Video frame
-//            if let image = processor.currentFrame {
-//                Image(uiImage: image)
-//                    .resizable()
-//                    .aspectRatio(contentMode: .fit)
-//            }
-//            
-//            // Keyframe overlay
-//            KeyframeOverlayView(
-//                matcher: processor.keyframeMatcher,
-//                matchResult: processor.matchResult
-//            )
-//            
-//            // Controls
-//            VStack {
-//                // Progress bar
-//                if processor.isProcessing {
-//                    ProgressView(value: processor.progress)
-//                        .padding()
-//                }
-//                
-//                Spacer()
-//                
-//                // Buttons
-//                HStack(spacing: 20) {
-//                    Button(action: { showVideoPicker = true }) {
-//                        Label("Select Video", systemImage: "video.badge.plus")
-//                            . padding()
-//                            . background(.ultraThinMaterial)
-//                            .cornerRadius(12)
-//                    }
-//                    
-//                    if processor.isProcessing {
-//                        Button(action: { processor.stop() }) {
-//                            Label("Stop", systemImage: "stop.fill")
-//                                . padding()
-//                                .background(Color.red.opacity(0.8))
-//                                . foregroundColor(.white)
-//                                .cornerRadius(12)
-//                        }
-//                    }
-//                    
-//                    Button(action: { processor.reset() }) {
-//                        Label("Reset", systemImage: "arrow.counterclockwise")
-//                            .padding()
-//                            .background(. ultraThinMaterial)
-//                            . cornerRadius(12)
-//                    }
-//                }
-//                . padding(.bottom, 30)
-//            }
-//        }
-//        .sheet(isPresented: $showVideoPicker) {
-//            VideoPickerView(videoURL: $selectedVideoURL)
-//        }
-//        .onChange(of: selectedVideoURL) { newURL in
-//            if let url = newURL {
-//                processor.processVideo(url: url)
-//            }
-//        }
-//    }
-//}
+struct ARViewContainer: UIViewRepresentable {
+    func makeUIView(context: Context) -> BodyARView {
+        return BodyARView(frame: .zero)
+    }
+    
+    func updateUIView(_ uiView: BodyARView, context: Context) {}
+}
 
 // MARK: - Video Picker
 
-struct VideoPickerView: UIViewControllerRepresentable {
+struct VideoPickerView:  UIViewControllerRepresentable {
     @Binding var videoURL: URL?
     @Environment(\.dismiss) private var dismiss
     
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.mediaTypes = ["public.movie"]
+        picker.mediaTypes = ["public. movie"]
         picker.videoQuality = .typeHigh
         picker.delegate = context.coordinator
         return picker
@@ -225,7 +160,7 @@ struct VideoPickerView: UIViewControllerRepresentable {
         }
         
         func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
-            if let url = info[.mediaURL] as? URL {
+            if let url = info[.mediaURL] as?  URL {
                 // Copy to temp location
                 let tempURL = FileManager.default.temporaryDirectory
                     .appendingPathComponent(UUID().uuidString + ".mov")
