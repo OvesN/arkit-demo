@@ -3,23 +3,15 @@ import BodyTracking
 import RealityKit
 import SwiftUI
 
-class BodyARView: ARView {
+class BodyARView: ARView, BodySkeletonRenderable {
     var bodyEntity: BodyEntity3D!
+    var bodyAnchor: BodyAnchor?
 
     required init(frame frameRect: CGRect) {
         super.init(frame: frameRect)
 
-        let bodyAnchor = BodyAnchor(session: session)
-
-        scene.addAnchor(bodyAnchor)
-
-        bodyEntity = BodyEntity3D()
-
-        bodyAnchor.attach(bodyEntity: bodyEntity)
-
+        setupBodyRendering()
         runNewConfiguration()
-
-        make3DJoints()
     }
 
     func runNewConfiguration() {

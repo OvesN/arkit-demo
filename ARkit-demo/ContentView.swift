@@ -13,9 +13,6 @@ struct ContentView: View {
     
     var body: some View {
         ZStack {
-            ARViewContainer()
-                .edgesIgnoringSafeArea(.all)
-            
             // Main surface
             Group {
                 switch selectedMode {
@@ -61,8 +58,9 @@ struct ARKitExerciseView: View {
     
     var body: some View {
         ZStack {
-            ARKitViewContainer(viewModel: viewModel, isRightArm: isRightArm)
-                .edgesIgnoringSafeArea(.all)
+            // AR camera + skeleton
+                     ARKitViewContainer(viewModel: viewModel, isRightArm: isRightArm)
+                         .edgesIgnoringSafeArea(.all)
             
             // Overlay - transparent, shows reps, state, angles, feedback
             KeyframeOverlayView(
@@ -132,13 +130,6 @@ struct ARKitViewContainer: UIViewRepresentable {
     func updateUIView(_ uiView: KeyframeBodyARView, context: Context) {}
 }
 
-struct ARViewContainer: UIViewRepresentable {
-    func makeUIView(context: Context) -> BodyARView {
-        return BodyARView(frame: .zero)
-    }
-    
-    func updateUIView(_ uiView: BodyARView, context: Context) {}
-}
 
 // MARK: - Video Picker
 

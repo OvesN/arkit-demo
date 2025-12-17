@@ -1,10 +1,27 @@
-
 import ARKit
 import RealityKit
 import BodyTracking
 import RKUtilities
 
-extension BodyARView {
+protocol BodySkeletonRenderable: AnyObject {
+    var bodyEntity: BodyEntity3D! { get set }
+    var bodyAnchor: BodyAnchor? { get set }
+}
+
+extension BodySkeletonRenderable where Self: ARView {
+    func setupBodyRendering() {
+        let anchor = BodyAnchor(session: session)
+        scene.addAnchor(anchor)
+
+        let entity = BodyEntity3D()
+        anchor.attach(bodyEntity: entity)
+
+        bodyAnchor = anchor
+        bodyEntity = entity
+
+        make3DJoints()
+    }
+
     func make3DJoints() {
         // Keeping track of created joints so we can use them as parents of other joints.
         let trackedJoints = makeTrackedJoints()

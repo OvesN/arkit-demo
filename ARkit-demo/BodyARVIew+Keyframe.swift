@@ -3,10 +3,10 @@ import BodyTracking
 import RealityKit
 import Combine
 
-
-class KeyframeBodyARView: ARView {
+class KeyframeBodyARView: ARView, BodySkeletonRenderable {
     
     var bodyEntity: BodyEntity3D!
+    var bodyAnchor: BodyAnchor?
     private(set) var keyframeMatcher: KeyframeMatcher!
     
     // Publishers for UI updates
@@ -21,6 +21,7 @@ class KeyframeBodyARView: ARView {
         keyframeMatcher = KeyframeMatcher(isRightArm: isRightArm)
         
         setupBodyTracking()
+        setupBodyRendering()
     }
     
     @available(*, unavailable)
@@ -32,6 +33,7 @@ class KeyframeBodyARView: ARView {
         super.init(frame: frameRect)
         keyframeMatcher = KeyframeMatcher(isRightArm: true)
         setupBodyTracking()
+        setupBodyRendering()
     }
     
     private func setupBodyTracking() {
