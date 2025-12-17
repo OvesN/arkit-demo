@@ -5,37 +5,32 @@ struct KeyframeOverlayView: View {
     let matchResult: KeyframeMatchResult?
     
     var body: some View {
-        VStack {
-            // Top HUD
-            HStack(alignment: .top) {
-                // Rep Counter
-                StatBox(title: "REPS", value:  "\(matcher.repCount)")
+        VStack(spacing: 12) {
+            // Top HUD: keyframe info + reps + form score on one line
+            HStack(alignment: .top, spacing: 12) {
+                if let keyframe = matcher.currentKeyframe {
+                    KeyframeIndicator(
+                        keyframe: keyframe,
+                        matchResult: matchResult,
+                        progress: matcher.progress
+                    )
+                } else {
+                    StartPositionBadge(state: matcher.exerciseState)
+                }
                 
                 Spacer()
                 
-                // Form Score
+                StatBox(title: "REPS", value: "\(matcher.repCount)")
+                
                 ScoreCircle(score: matcher.formScore)
             }
-            . padding()
-            
-            Spacer()
-            
-            // Center - State/Keyframe indicator
-            if matcher.exerciseState == .idle || matcher.exerciseState == .preparingStart {
-                StartPositionGuide(state:  matcher.exerciseState)
-            } else if let keyframe = matcher.currentKeyframe {
-                KeyframeIndicator(
-                    keyframe: keyframe,
-                    matchResult: matchResult,
-                    progress: matcher.progress
-                )
-            }
+            .padding(.horizontal)
+            .padding(.top, 8)
             
             Spacer()
             
             // Bottom - Angle readings and feedback
-            VStack(spacing:  12) {
-                // Current angles display
+            VStack(spacing: 12) {
                 if !matcher.currentAngles.isEmpty {
                     AngleReadingsView(
                         angles: matcher.currentAngles,
@@ -43,7 +38,6 @@ struct KeyframeOverlayView: View {
                     )
                 }
                 
-                // Feedback bar
                 FeedbackBar(
                     message: matcher.feedback,
                     state: matcher.exerciseState,
@@ -52,6 +46,43 @@ struct KeyframeOverlayView: View {
             }
             .padding()
         }
+    }
+}
+
+struct StartPositionBadge: View {
+    let state: KeyframeMatcher.KeyframeExerciseState
+    
+    var text: String {
+        switch state {
+        case .idle: return "Get in starting position"
+        case .preparingStart: return "Aligning…"
+        case .ready: return "Ready!"
+        default: return "In motion"
+        }
+    }
+    
+    var color: Color {
+        switch state {
+        case .ready: return .green
+        case .preparingStart: return .orange
+        case .idle: return .gray
+        default: return .blue
+        }
+    }
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            Circle()
+                .fill(color)
+                .frame(width: 10, height: 10)
+            Text(text)
+                .font(.caption)
+                .foregroundColor(.primary)
+        }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+        .background(.ultraThinMaterial)
+        .cornerRadius(14)
     }
 }
 
@@ -80,7 +111,7 @@ struct ScoreCircle: View {
     
     var color: Color {
         if score >= 80 { return .green }
-        if score >= 60 { return . yellow }
+        if score >= 60 { return .yellow }
         return .red
     }
     
@@ -95,42 +126,18 @@ struct ScoreCircle: View {
                     .stroke(color.opacity(0.3), lineWidth: 6)
                 
                 Circle()
-                    .trim(from: 0, to:  score / 100)
+                    .trim(from: 0, to: score / 100)
                     .stroke(color, style: StrokeStyle(lineWidth: 6, lineCap: .round))
                     .rotationEffect(.degrees(-90))
                 
                 Text("\(Int(score))%")
-                    .font(. system(size: 18, weight: .bold, design: .rounded))
+                    .font(.system(size: 18, weight: .bold, design: .rounded))
             }
-            .frame(width: 70, height:  70)
+            .frame(width: 70, height: 70)
         }
         .padding()
-        .background(. ultraThinMaterial)
-        .cornerRadius(12)
-    }
-}
-
-struct StartPositionGuide: View {
-    let state: KeyframeMatcher.KeyframeExerciseState
-    
-    var body: some View {
-        VStack(spacing: 20) {
-            Image(systemName: state == .preparingStart ? "figure.arms.open" : "figure.stand")
-                .font(.system(size: 80))
-                .foregroundColor(state == .preparingStart ?  .green : .gray)
-            
-            Text(state.displayText)
-                .font(.title2)
-                .fontWeight(.medium)
-            
-            if state == .preparingStart {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle())
-            }
-        }
-        .padding(32)
         .background(.ultraThinMaterial)
-        .cornerRadius(24)
+        .cornerRadius(12)
     }
 }
 

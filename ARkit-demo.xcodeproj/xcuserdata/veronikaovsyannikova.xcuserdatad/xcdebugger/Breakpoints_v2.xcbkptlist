@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "FBB136BE-41F0-418C-83F9-75C84415524C"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.AddressBreakpoint">
+         <BreakpointContent
+            uuid = "A5670CE7-5DAF-48D9-A5F1-D7EE6225FAB2"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            symbolName = "*0x105708024">
+            <Locations>
+               <Location
+                  uuid = "A5670CE7-5DAF-48D9-A5F1-D7EE6225FAB2 - 35548a608e9d2f35"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "ARkit_demo.KeyframeIndicator.init(keyframe: ARkit_demo.Keyframe, matchResult: Swift.Optional&lt;ARkit_demo.KeyframeMatchResult&gt;, progress: Swift.Double) -&gt; ARkit_demo.KeyframeIndicator"
+                  moduleName = "ARkit-demo.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/veronikaovsyannikova/CVUT/Dip/foo/arkit-demo/ARkit-demo/KeyframeOverlayView.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "0"
+                  endingLineNumber = "0">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

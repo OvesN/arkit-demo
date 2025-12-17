@@ -17,7 +17,7 @@ protocol PoseData {
 /// Main engine for keyframe matching
 class KeyframeMatcher: ObservableObject {
 
-    
+
     @Published var currentKeyframeIndex: Int = 0
     @Published var lastMatchResult: KeyframeMatchResult?
     @Published var repCount: Int = 0
